@@ -1,4 +1,6 @@
+import java.io.FileInputStream;
 import java.sql.*;
+import java.util.Properties;
 
 public class ResultSetMetadata {
     public static void main(String[] args) {
@@ -7,30 +9,28 @@ public class ResultSetMetadata {
         ResultSet rs = null;
 
         try {
-            // Load MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Properties properties = new Properties();
+            properties.load(new FileInputStream("config.properties"));
 
-            // Establish connection
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajava", "root", "sandeep1818");
+            String dbUrl = properties.getProperty("db.url");
+            String dbUsername = properties.getProperty("db.username");
+            String dbPassword = properties.getProperty("db.password");
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
 
             if (con != null) {
-                // SQL query
                 String s = "SELECT * FROM student";
 
-                // Create statement
                 stmt = con.createStatement();
 
-                // Execute query
                 rs = stmt.executeQuery(s);
 
-                // Get metadata of the result set
                 ResultSetMetaData rsmd = rs.getMetaData();
 
-                // Get number of columns
                 int noc = rsmd.getColumnCount();
                 System.out.println("Number of Columns: " + noc);
 
-                // Print column names, types, and type names
                 for (int i = 1; i <= noc; i++) {
                     System.out.println("Column " + i + " = " + rsmd.getColumnName(i));
                     System.out.println("Column Type " + i + " = " + rsmd.getColumnType(i));
