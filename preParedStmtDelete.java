@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class preParedStmtDelete {
     public static void main(String[] args) {
-        try (
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajava", "root",
-                        "sandeep1818");
-                Scanner sc = new Scanner(System.in);) {
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajava", "root", "sandeep1818");
             Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Scanner sc = new Scanner(System.in);
 
             if (con != null) {
                 String s1 = "delete from student where roll=?";
@@ -20,6 +20,7 @@ public class preParedStmtDelete {
 
                     pstmt.executeUpdate();
                     System.out.println("::::::::::::deleted successfully::::::::::");
+                    sc.close();
                 }
                 String s = "select * from student";
                 try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(s)) {
