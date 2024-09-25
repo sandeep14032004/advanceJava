@@ -1,13 +1,20 @@
 
+import java.io.FileInputStream;
 import java.sql.*;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class preParedStmtDelete {
     public static void main(String[] args) {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ajava", "root", "sandeep1818");
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Properties properties = new Properties();
+            properties.load(new FileInputStream("config.properties"));
+            String dbUrl = properties.getProperty("db.url");
+            String dbUsername = properties.getProperty("db.username");
+            String dbPassword = properties.getProperty("db.password");
 
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
             Scanner sc = new Scanner(System.in);
 
             if (con != null) {
